@@ -4,13 +4,14 @@ module Snippets
     before_action :authenticate_user!
 
     def index
-      @snippets = Snippet.all
-      render json: @snippets
+      snippets = Snippet.all
+      render json: snippets
     end
 
     def show
-      @snippet = current_user.snippets.find(params[:id])
-      render json: @snippet
+      user = User.find(params[:user_id])
+      snippet = user.snippets.find(params[:id])
+      render json: snippet
     end
 
     def create
