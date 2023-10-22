@@ -1,9 +1,10 @@
-class Snippets::SnippetsController < ApplicationController
+module Snippets
+  class SnippetsController < ApplicationController
 
     before_action :authenticate_user!
 
     def index
-      @snippets = Snippet.all()
+      @snippets = Snippet.all
       render json: @snippets
     end
 
@@ -41,5 +42,5 @@ class Snippets::SnippetsController < ApplicationController
     def snippet_params
       params.require(:snippet).permit(:content)
     end
-
+  end
 end

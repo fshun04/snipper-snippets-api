@@ -8,7 +8,10 @@ Rails.application.routes.draw do
     sessions: 'users/sessions',
     registrations: 'users/registrations'
   }
-  resources :users do
-    resources :snippets
+
+  resources :snippets, only: :index, controller: 'snippets/snippets'
+
+  resources :users, controller: 'users/registrations' do
+    resources :snippets, only: [:show, :create, :update, :new, :destroy], controller: 'snippets/snippets'
   end
 end
