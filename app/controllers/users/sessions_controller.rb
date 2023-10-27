@@ -1,23 +1,16 @@
 # frozen_string_literal: true
 
 class Users::SessionsController < Devise::SessionsController
-
   include RackSessionsFix
   respond_to :json
 
   def respond_with(current_user, _opts = {})
-    if params[:user][:provider] == 'google'
+    if request.env['omniauth.auth']
+      # user logged in via Google OAuth
       user = User.from_omniauth(request.env['omniauth.auth'])
-    elsif params[:user][:provider] == 'internal'
-      user = User.from_internal_login(params[:user][:email], params[:user][:password])
     else
-      render json: {
-        status: {
-          code: 400,
-          message: 'Invalid provider.'
-        }
-      }, status: :bad_request
-      return
+      # user did not log in via Google OAuth
+      user = User.from_internal_login(params[:user][:email], params[:user][:password])
     end
 
     if user && user.valid_password?(params[:user][:password])
@@ -39,8 +32,6 @@ class Users::SessionsController < Devise::SessionsController
     end
   end
 
-
-
   def respond_to_on_destroy
     if request.headers['Authorization'].present?
       jwt_payload = JWT.decode(request.headers['Authorization'].split(' ').last, Rails.application.credentials.devise_jwt_secret_key!).first
@@ -60,5 +51,4 @@ class Users::SessionsController < Devise::SessionsController
       }, status: :unauthorized
     end
   end
-
 end
