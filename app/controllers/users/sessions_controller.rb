@@ -5,16 +5,41 @@ class Users::SessionsController < Devise::SessionsController
   include RackSessionsFix
   respond_to :json
 
-  private
-
   def respond_with(current_user, _opts = {})
-    render json: {
-      status: {
-        code: 200, message: 'Logged in successfully.',
-        data: { user: UserSerializer.new(current_user).serializable_hash[:data][:attributes] }
-      }
-    }, status: :ok
+    if params[:user][:provider] == 'google'
+      user = User.from_omniauth(request.env['omniauth.auth'])
+    elsif params[:user][:provider] == 'internal'
+      user = User.from_internal_login(params[:user][:email], params[:user][:password])
+    else
+      render json: {
+        status: {
+          code: 400,
+          message: 'Invalid provider.'
+        }
+      }, status: :bad_request
+      return
+    end
+
+    if user && user.valid_password?(params[:user][:password])
+      sign_in user
+      render json: {
+        status: {
+          code: 200,
+          message: 'Logged in successfully.',
+          data: { user: UserSerializer.new(user).serializable_hash[:data][:attributes] }
+        }
+      }, status: :ok
+    else
+      render json: {
+        status: {
+          code: 401,
+          message: 'Login failed.'
+        }
+      }, status: :unauthorized
+    end
   end
+
+
 
   def respond_to_on_destroy
     if request.headers['Authorization'].present?
@@ -23,6 +48,7 @@ class Users::SessionsController < Devise::SessionsController
     end
 
     if current_user
+      sign_out(current_user)
       render json: {
         status: 200,
         message: 'Logged out successfully.'
@@ -34,4 +60,5 @@ class Users::SessionsController < Devise::SessionsController
       }, status: :unauthorized
     end
   end
+
 end
