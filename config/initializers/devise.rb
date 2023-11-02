@@ -294,7 +294,7 @@ Devise.setup do |config|
   #
   # When using OmniAuth, Devise cannot automatically set OmniAuth path,
   # so you need to do it manually. For the users scope, it would be:
-  # config.omniauth_path_prefix = '/my_engine/users/auth'
+  # config.omniauth_path_prefix = '/auth'
 
   # ==> Hotwire/Turbo configuration
   # When using Devise with Hotwire/Turbo, the http status for error responses
@@ -314,6 +314,7 @@ Devise.setup do |config|
     jwt.secret = Rails.application.credentials.devise_jwt_secret_key!
     jwt.dispatch_requests = [
       ['POST', %r{^/login$}]
+      # ['POST', %r{^/auth/google_oauth2/callback$}]
     ]
     jwt.revocation_requests = [
       ['DELETE', %r{^/logout$}]
@@ -321,6 +322,5 @@ Devise.setup do |config|
     jwt.expiration_time = 30.minutes.to_i
   end
 
-  config.omniauth :google_oauth2, ENV['GOOGLE_CLIENT_ID'], ENV['GOOGLE_CLIENT_SECRET'], {}
 end
 

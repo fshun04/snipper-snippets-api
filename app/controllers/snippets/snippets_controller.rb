@@ -38,8 +38,6 @@ module Snippets
       head :no_content
     end
 
-    private
-
     def snippet_params
       params.require(:snippet).permit(:content)
     end
