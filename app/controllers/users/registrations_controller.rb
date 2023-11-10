@@ -7,7 +7,9 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def create
     user = User.new(sign_up_params)
     if user.save
-      render json: UserResource.new(user).custom_json, status: :created
+      snippets = user.snippets
+      user_resource = UserResource.new(user, snippets)
+      render json: user_resource.custom_json, status: :ok, status: :created
     else
       render json: { errors: user.errors }, status: :unprocessable_entity
     end

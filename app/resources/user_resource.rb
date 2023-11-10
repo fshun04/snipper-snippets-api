@@ -2,42 +2,39 @@ class UserResource < JSONAPI::Resource
   attributes :email, :name
   has_many :snippets
 
-  def initialize(user)
-    @user = user
+  def initialize(current_user, snippets)
+    @current_user = current_user
+    @snippets = snippets
   end
 
   def custom_json
     {
-      links: {
-        self: Rails.application.routes.url_helpers.users_path
-      },
       data: {
         type: "users",
-        id: @user.id,
+        id: @current_user.id,
         attributes: {
-          email: @user.email,
-          name: @user.name,
-          created_at: @user.created_at,
-          updated_at: @user.updated_at
+          email: @current_user.email,
+          name: @current_user.name,
         },
         relationships: {
           snippets: {
             links: {
               self: Rails.application.routes.url_helpers.snippets_path
             },
-            data: @user.snippets.map do |snippet|
+            data: @current_user.snippets.map do |snippet|
               {
                 type: "snippets",
                 id: snippet.id.to_s,
                 attributes: {
-                  content: snippet.content,
-                  created_at: snippet.created_at,
-                  updated_at: snippet.updated_at
+                  content: snippet.content
                 }
               }
             end
           }
         }
+      },
+      links: {
+        self: Rails.application.routes.url_helpers.user_path(@current_user)
       }
     }
   end

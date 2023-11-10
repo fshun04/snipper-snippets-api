@@ -7,7 +7,9 @@ class Users::SessionsController < Devise::SessionsController
     user = User.from_internal_login(params[:user][:email], params[:user][:password])
     if user
       sign_in(user)
-      render json: UserResource.new(user).custom_json, status: :created
+      snippets = current_user.snippets
+      user_resource = UserResource.new(current_user, snippets)
+      render json: user_resource.custom_json, status: :ok, status: :created
     else
       render json: { errors: [{ title: 'Invalid email or password' }] }, status: :unauthorized
     end

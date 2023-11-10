@@ -4,14 +4,14 @@ class SnippetsController < JSONAPI::ResourceController
 
   def index
     snippets = current_user.snippets
-    snippet_resource = SnippetResource.new(snippets, current_user)
+    snippet_resource = SnippetResource.new(current_user, snippets)
     render json: snippet_resource.custom_json, status: :ok
   end
 
   def show
-    user = User.find(params[:user_id])
-    snippet = user.snippets.find(params[:id])
-    render json: SnippetResource.new(snippet), status: :ok
+    snippet = current_user.snippets.find(params[:id])
+    snippet_resource = SnippetResource.new(current_user, snippet)
+    render json: snippet_resource.custom_json, status: :ok  
   end
 
   def create
