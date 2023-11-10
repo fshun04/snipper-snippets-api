@@ -37,7 +37,9 @@ class Snippet < ApplicationRecord
     decipher.decrypt
     decipher.key = self.class.encryption_key
     decipher.iv = self.class.encryption_iv
-    decrypted = decipher.update(decoded_content) + decipher.final
+    decrypted = decipher.update(decoded_content)
+    decrypted << decipher.final
     self.content = decrypted
   end
+
 end

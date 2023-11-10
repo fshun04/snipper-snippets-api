@@ -125,6 +125,10 @@ GEM
     irb (1.8.3)
       rdoc
       reline (>= 0.3.8)
+    jsonapi-resources (0.10.7)
+      activerecord (>= 4.1)
+      concurrent-ruby
+      railties (>= 4.1)
     jsonapi-serializer (2.2.0)
       activesupport (>= 4.2)
     jwt (2.7.1)
@@ -280,6 +284,7 @@ DEPENDENCIES
   devise-jwt
   dotenv-rails
   factory_bot_rails
+  jsonapi-resources
   jsonapi-serializer
   omniauth-google-oauth2
   omniauth-rails_csrf_protection (~> 1.0)

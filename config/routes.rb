@@ -7,13 +7,14 @@ Rails.application.routes.draw do
   controllers: {
     sessions: 'users/sessions',
     registrations: 'users/registrations',
-    omniauth_callbacks: 'users/omniauth_callbacks'
   }
 
-  resources :snippets, only: :index, controller: 'snippets/snippets'
-  resources :snippets, only: :create, controller: 'snippets/snippets'
+  jsonapi_resources :users
+  jsonapi_resources :snippets
 
-  resources :users, controller: 'users/registrations' do
-    resources :snippets, only: [:show, :update, :new, :destroy], controller: 'snippets/snippets'
-  end
+  # resources :snippets, only: [:index, :create], controller: 'snippets/snippets'
+
+  # resources :users, controller: 'users/registrations' do
+  #   resources :snippets, only: [:show, :update, :new, :destroy], controller: 'snippets/snippets'
+  # end
 end
