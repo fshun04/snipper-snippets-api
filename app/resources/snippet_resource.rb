@@ -17,9 +17,9 @@ class SnippetResource < JSONAPI::Resource
           type: "snippets",
           id: snippet.id.to_s,
           attributes: {
-            content: @snippet.content,
-            created_at: @snippet.created_at,
-            updated_at: @snippet.updated_at
+            content: snippet.content,
+            created_at: snippet.created_at,
+            updated_at: snippet.updated_at
           },
           relationships: {
             user: {
