@@ -40,4 +40,3 @@ class UserResource < JSONAPI::Resource
   end
 
 end
-
