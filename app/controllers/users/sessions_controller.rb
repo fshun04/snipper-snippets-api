@@ -4,14 +4,19 @@ class Users::SessionsController < Devise::SessionsController
   respond_to :json
 
   def create
-    user = User.from_internal_login(params[:user][:email], params[:user][:password])
-    if user
-      sign_in(user)
-      snippets = current_user.snippets
-      user_resource = UserResource.new(current_user, snippets)
-      render json: user_resource.custom_json, status: :ok, status: :created
+    input = UserSessionSchema.call(params.permit(user: {}).to_h)
+    if input.success?
+      user = User.from_internal_login(input[:user][:email], input[:user][:password])
+      if user
+        sign_in(user)
+        snippets = current_user.snippets
+        user_resource = UserResource.new(current_user, snippets)
+        render json: user_resource.custom_json, status: :created
+      else
+        render json: { errors: [{ title: 'Invalid email or password' }] }, status: :unauthorized
+      end
     else
-      render json: { errors: [{ title: 'Invalid email or password' }] }, status: :unauthorized
+      render json: { errors: input.errors.to_h }, status: :unprocessable_entity
     end
   end
 
