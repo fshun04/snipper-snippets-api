@@ -1,13 +1,15 @@
 require 'rails_helper'
 
-RSpec.describe SnippetSchema do
+RSpec.describe Snippets::Contracts::SnippetContract do
+  let(:contract) { described_class.new }
+
   describe 'Validation' do
     context 'with valid input' do
       let(:valid_snippet) { build(:valid_snippet) }
 
       it 'is valid' do
         input = valid_snippet.attributes
-        result = described_class.call(snippet: input)
+        result = contract.call(snippet: input)
         expect(result).to be_success
       end
     end
@@ -17,13 +19,13 @@ RSpec.describe SnippetSchema do
 
       it 'is invalid' do
         input = invalid_snippet.attributes
-        result = described_class.call(snippet: input)
+        result = contract.call(snippet: input)
         expect(result).not_to be_success
       end
 
       it 'provides detailed error messages' do
         input = invalid_snippet.attributes
-        result = described_class.call(snippet: input)
+        result = contract.call(snippet: input)
         expect(result.errors[:snippet][:content]).to include('must be filled')
       end
     end

@@ -63,4 +63,5 @@ gem 'dotenv-rails', groups: [:development, :test]
 gem 'pundit'
 gem 'jsonapi-resources'
 gem 'dry-schema'
+gem 'dry-validation'
 

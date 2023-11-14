@@ -4,9 +4,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
   respond_to :json
 
   def create
-    input = UserRegistrationSchema.call(params.permit(user: {}).to_h)
-    if input.success?
-      user = User.new(input[:user].to_h)
+    contract = Registrations::Contracts::UserRegistrationContract.new
+    operation = contract.call(params.permit(user: {}).to_h)
+    if operation.success?
+      user = User.new(operation[:user].to_h)
       if user.save
         snippets = user.snippets
         user_resource = UserResource.new(user, snippets)
@@ -15,7 +16,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
         render json: { errors: user.errors }, status: :unprocessable_entity
       end
     else
-      render json: { errors: input.errors.to_h }, status: :unprocessable_entity
+      render json: { errors: operation.errors.to_h }, status: :unprocessable_entity
     end
   end
 end

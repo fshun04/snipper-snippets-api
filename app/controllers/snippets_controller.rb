@@ -15,9 +15,10 @@ class SnippetsController < JSONAPI::ResourceController
   end
 
   def create
-    input = SnippetSchema.call(params.permit(snippet: {}).to_h)
-    if input.success?
-      snippet = current_user.snippets.new(input[:snippet].to_h)
+    contract = Snippets::Contracts::SnippetContract.new
+    operation = contract.call(params.permit(snippet: {}).to_h)
+    if operation.success?
+      snippet = current_user.snippets.new(operation[:snippet].to_h)
       if snippet.save
         snippet_resource = SnippetResource.new(current_user, snippet)
         render json: snippet, status: :created
@@ -25,7 +26,7 @@ class SnippetsController < JSONAPI::ResourceController
         render json: { errors: snippet.errors }, status: :unprocessable_entity
       end
     else
-      render json: { errors: input.errors.to_h }, status: :unprocessable_entity
+      render json: { errors: operation.errors.to_h }, status: :unprocessable_entity
     end
   end
 end
