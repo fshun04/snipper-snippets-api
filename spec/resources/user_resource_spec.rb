@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe UserResource do
   describe 'Serialization' do
     it 'serializes attributes' do
-      user = create(:user)
+      user = create(:valid_user)
       resource = UserResource.new(user, [])
       serialized_json = resource.custom_json
 
@@ -12,8 +12,8 @@ RSpec.describe UserResource do
     end
 
     it 'serializes relationships' do
-      user = create(:user)
-      snippet = create(:snippet, user: user)
+      user = create(:valid_user)
+      snippet = create(:valid_snippet, user: user)
       resource = UserResource.new(user, [snippet])
       serialized_json = resource.custom_json
 
@@ -21,7 +21,7 @@ RSpec.describe UserResource do
     end
 
     it 'serializes links' do
-      user = create(:user)
+      user = create(:valid_user)
       resource = UserResource.new(user, [])
       serialized_json = resource.custom_json
 
