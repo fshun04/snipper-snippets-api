@@ -41,11 +41,10 @@ group :development, :test do
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
   gem 'rspec-rails'
   gem 'rspec-support'
-
+  gem 'factory_bot_rails'
 end
 
 group :test do
-  gem 'factory_bot_rails'
   gem 'shoulda-matchers'
 end
 
@@ -62,3 +61,7 @@ gem 'omniauth-google-oauth2'
 gem 'omniauth-rails_csrf_protection', '~> 1.0'
 gem 'dotenv-rails', groups: [:development, :test]
 gem 'pundit'
+gem 'jsonapi-resources'
+gem 'dry-schema'
+gem 'dry-validation'
+

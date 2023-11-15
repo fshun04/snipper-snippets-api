@@ -1,30 +1,50 @@
 # README
 
-My Rails API-only application is one that allows the user to sign up with a username and password, log in, access their snippets through providing a token, then log out when they feel like it.
+To simulate the flow of this app in Postman, you must:
 
-Currently, my application allows for internal users to sign up with a POST request to /signup using the JSON format {user: {email, password, name}}. They can then do a POST request to /login with the JSON format {user:{email, password}} - if the email and password match the ones stored in the database after a user signs up, they are logged in and given a JWT. Then, they can do a GET or POST request to /snippets with the JWT they received in the header, which allows them to access their snippets. It does not work if a JWT is not provided. Finally, they can do a DELETE request to /logout with the JWT, after which it is revoked and the user is logged out.
+1. Start the Rails server with `rails server`
 
-I am currently trying to add support for Google users. The way I want this to work is as follows - login through a POST request to http://localhost:3000/auth/google_oauth2, where they are redirected to the google login page. They can then log in with their Google account after which they are redirected back and are given an OAuth 2.0 token, which is exchanged for a JWT. The internal database will generate a new user based on the email that has been provided, if the email doesn't already exist in the database. They should now be able to do a GET or POST request to /snippets with the JWT in the header in order to access their snippets. They can then do a DELETE request to /logout with the JWT which revokes the token and logs the user out. From now on, the Google user should also be able to login through /login, but they can also do it through Google if they so wish.
+2. In Postman, set up a POST request to `http://localhost:3000/signup` and set a JSON body with the following structure:
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+{
+    "user": {
+        "email": "(the email that you want to sign up with)",
+        "password": "(the password that you want to link with your account)",
+        "name": "(your name)"
+    }
+}
 
-Things you may want to cover:
+If done correctly, you should be sent a JSON response that follows the JSON API standard. It should include the user, its links and its relationships (snippets).
 
-- Ruby version
+3. In Postman, set up a POST request to `http://localhost:3000/login`, and set the body of the request to a JSON with the following structure:
 
-- System dependencies
+{
+    "user": {
+        "email": "(the email that you signed up with)",
+        "password": "(the password that you linked to your account)"
+    }
+}
 
-- Configuration
+If done correctly, you should be sent a JSON response that follows the JSON API standard. It should include the user, its links and its relationships (associated snippets).
 
-- Database creation
+You should also receive a JSON Web Token in the response's Headers > Authorization. It should have the prefix `Bearer` alongside a string of characters. Make sure to copy this entire value. Do bear in mind that the token will expire after 30 minutes, so if this happens you will have to log in again.
 
-- Database initialization
+4. In Postman, set up a POST request to `http://localhost:3000/snippets`, create a new header `Authorization` with the JWT that you copied earlier as its value, and set the body of the request to a JSON with the following structure:
 
-- How to run the test suite
+{
+    "snippet": {
+        "content": "(the snippet that you want to create)"
+    }
+}
 
-- Services (job queues, cache servers, search engines, etc.)
+Feel free to create as many snippets as you want.
 
-- Deployment instructions
+4. In Postman, set up a GET request to `http://localhost:3000/snippets`, create a new header `Authorization` with the JWT that you copied earlier as its value, and set the body of the request to none.
 
-- ...
+If done correctly, you should be sent a JSON response that follows the JSON API standard. It should include your snippets, their links and their relationships (associated user).
+
+DEBUGGING:
+
+Go to the index action of the Snippets controller
+
+Currently, I am having two issues - one where it states that SnippetResource has the wrong number of arguments, and (if this doesn't occur), I get one where it says that it cannot display the decoded snippets in JSON API format due to invalid UTF-8 encoding. Interestingly, when I don't use the SnippetResource to render this response (i.e. render json: snippets), things seem to work just fine.
