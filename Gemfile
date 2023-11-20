@@ -64,4 +64,5 @@ gem 'pundit'
 gem 'jsonapi-resources'
 gem 'dry-schema'
 gem 'dry-validation'
+gem 'rswag'
 

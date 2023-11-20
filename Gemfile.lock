@@ -77,6 +77,8 @@ GEM
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
       tzinfo (~> 2.0)
+    addressable (2.8.5)
+      public_suffix (>= 2.0.2, < 6.0)
     base64 (0.1.1)
     bcrypt (3.1.19)
     bootsnap (1.17.0)
@@ -151,6 +153,8 @@ GEM
     irb (1.8.3)
       rdoc
       reline (>= 0.3.8)
+    json-schema (3.0.0)
+      addressable (>= 2.8)
     jsonapi-resources (0.10.7)
       activerecord (>= 4.1)
       concurrent-ruby
@@ -209,6 +213,7 @@ GEM
     orm_adapter (0.5.0)
     psych (5.1.1.1)
       stringio
+    public_suffix (5.0.3)
     puma (5.6.7)
       nio4r (~> 2.0)
     pundit (2.3.1)
@@ -274,6 +279,20 @@ GEM
       rspec-mocks (~> 3.12)
       rspec-support (~> 3.12)
     rspec-support (3.12.1)
+    rswag (2.11.0)
+      rswag-api (= 2.11.0)
+      rswag-specs (= 2.11.0)
+      rswag-ui (= 2.11.0)
+    rswag-api (2.11.0)
+      railties (>= 3.1, < 7.2)
+    rswag-specs (2.11.0)
+      activesupport (>= 3.1, < 7.2)
+      json-schema (>= 2.2, < 4.0)
+      railties (>= 3.1, < 7.2)
+      rspec-core (>= 2.14)
+    rswag-ui (2.11.0)
+      actionpack (>= 3.1, < 7.2)
+      railties (>= 3.1, < 7.2)
     ruby2_keywords (0.0.5)
     shoulda-matchers (5.3.0)
       activesupport (>= 5.2.0)
@@ -322,6 +341,7 @@ DEPENDENCIES
   rails (~> 7.0.8)
   rspec-rails
   rspec-support
+  rswag
   shoulda-matchers
   spring
   sqlite3 (~> 1.4)

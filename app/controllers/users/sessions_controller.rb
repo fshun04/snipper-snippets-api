@@ -22,9 +22,17 @@ class Users::SessionsController < Devise::SessionsController
   end
 
   def respond_to_on_destroy
+    Rails.logger.debug "Headers: #{request.headers.inspect}"
     if request.headers['Authorization'].present?
-      jwt_payload = JWT.decode(request.headers['Authorization'].split(' ').last, Rails.application.credentials.devise_jwt_secret_key!).first
-      current_user = User.find(jwt_payload['sub'])
+      jwt_token = request.headers['Authorization'].split(' ')&.last
+      Rails.logger.debug "JWT Token: #{jwt_token}"
+      begin
+        jwt_payload = JWT.decode(jwt_token, Rails.application.credentials.devise_jwt_secret_key!).first
+        Rails.logger.debug "Decoded JWT Payload: #{jwt_payload}"
+        current_user = User.find(jwt_payload['sub'])
+      rescue JWT::DecodeError => e
+        Rails.logger.error "JWT Decode Error: #{e.message}"
+      end
     end
 
     if current_user
@@ -40,4 +48,5 @@ class Users::SessionsController < Devise::SessionsController
       }, status: :unauthorized
     end
   end
+
 end
