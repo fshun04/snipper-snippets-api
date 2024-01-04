@@ -1,4 +1,4 @@
-class SnippetsController < JSONAPI::ResourceController
+class Snippets::SnippetsController < JSONAPI::ResourceController
   skip_before_action :verify_authenticity_token
   before_action :authenticate_user!
 

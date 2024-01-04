@@ -14,9 +14,4 @@ Rails.application.routes.draw do
   jsonapi_resources :users
   jsonapi_resources :snippets
 
-  # resources :snippets, only: [:index, :create], controller: 'snippets/snippets'
-
-  # resources :users, controller: 'users/registrations' do
-  #   resources :snippets, only: [:show, :update, :new, :destroy], controller: 'snippets/snippets'
-  # end
 end
