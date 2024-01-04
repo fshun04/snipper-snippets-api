@@ -1,0 +1,443 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "API V1",
+    "version": "v1"
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  },
+  "paths": {
+    "/signup": {
+      "post": {
+        "summary": "registers a new user",
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+
+        ],
+        "responses": {
+          "201": {
+            "description": "user registered"
+          },
+          "422": {
+            "description": "invalid request"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user": {
+                    "type": "object",
+                    "properties": {
+                      "email": {
+                        "type": "string",
+                        "format": "email"
+                      },
+                      "password": {
+                        "type": "string",
+                        "minLength": 6
+                      },
+                      "name": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "email",
+                      "password",
+                      "name"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "summary": "logs a user in",
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+
+        ],
+        "responses": {
+          "201": {
+            "description": "user logged in"
+          },
+          "422": {
+            "description": "invalid request"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user": {
+                    "type": "object",
+                    "properties": {
+                      "email": {
+                        "type": "string",
+                        "format": "email"
+                      },
+                      "password": {
+                        "type": "string",
+                        "minLength": 6
+                      }
+                    },
+                    "required": [
+                      "email",
+                      "password"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        }
+      }
+    },
+    "/logout": {
+      "delete": {
+        "summary": "logs a user out",
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Bearer <your_token>",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "user logged out"
+          },
+          "401": {
+            "description": "active session not found"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+
+            ]
+          }
+        ]
+      }
+    },
+    "/snippets": {
+      "get": {
+        "summary": "displays the current user's snippets",
+        "tags": [
+          "Snippets"
+        ],
+        "security": [
+          {
+            "bearerAuth": {
+            }
+          }
+        ],
+        "parameters": [
+          {
+            "name": "sort",
+            "in": "query",
+            "required": false,
+            "description": "Comma-separated list of fields to sort by. Available fields: `content`, `created_at`, `updated_at`. Prefix a field by `-` to reverse the sort order. For example `foo,-bar` sorts by `foo` in ascending order then by `bar` in descending order.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[content][contains]",
+            "in": "query",
+            "required": false,
+            "description": "Causes the response to include only records whose `content` attribute contains the given value as a substring (case-insensitive).",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[created_at][lt]",
+            "in": "query",
+            "required": false,
+            "description": "Causes the response to include only records whose `created_at` attribute is strictly less than the given value.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[created_at][lte]",
+            "in": "query",
+            "required": false,
+            "description": "Causes the response to include only records whose `created_at` attribute is less than or equal to the given value.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[created_at][gt]",
+            "in": "query",
+            "required": false,
+            "description": "Causes the response to include only records whose `created_at` attribute is strictly greater than the given value.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[created_at][gte]",
+            "in": "query",
+            "required": false,
+            "description": "Causes the response to include only records whose `created_at` attribute is greater than or equal to the given value.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[updated_at][lt]",
+            "in": "query",
+            "required": false,
+            "description": "Causes the response to include only records whose `updated_at` attribute is strictly less than the given value.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[updated_at][lte]",
+            "in": "query",
+            "required": false,
+            "description": "Causes the response to include only records whose `updated_at` attribute is less than or equal to the given value.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[updated_at][gt]",
+            "in": "query",
+            "required": false,
+            "description": "Causes the response to include only records whose `updated_at` attribute is strictly greater than the given value.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[updated_at][gte]",
+            "in": "query",
+            "required": false,
+            "description": "Causes the response to include only records whose `updated_at` attribute is greater than or equal to the given value.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "user logged out"
+          },
+          "401": {
+            "description": "active session not found"
+          }
+        }
+      },
+      "post": {
+        "summary": "creates a new snippet for the current user",
+        "tags": [
+          "Snippets"
+        ],
+        "security": [
+          {
+            "bearerAuth": {
+            }
+          }
+        ],
+        "parameters": [
+
+        ],
+        "responses": {
+          "201": {
+            "description": "snippet created"
+          },
+          "422": {
+            "description": "invalid snippet"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "snippet": {
+                    "type": "object",
+                    "properties": {
+                      "content": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "content"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        }
+      }
+    },
+    "/signup": {
+      "post": {
+        "summary": "registers a new user",
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+
+        ],
+        "responses": {
+          "201": {
+            "description": "user registered"
+          },
+          "422": {
+            "description": "invalid user"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user": {
+                    "type": "object",
+                    "properties": {
+                      "email": {
+                        "type": "string",
+                        "format": "email"
+                      },
+                      "password": {
+                        "type": "string",
+                        "minLength": 6
+                      },
+                      "name": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "email",
+                      "password",
+                      "name"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "summary": "logs a user in",
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+
+        ],
+        "responses": {
+          "201": {
+            "description": "user logged in"
+          },
+          "422": {
+            "description": "invalid user"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user": {
+                    "type": "object",
+                    "properties": {
+                      "email": {
+                        "type": "string",
+                        "format": "email"
+                      },
+                      "password": {
+                        "type": "string",
+                        "minLength": 6
+                      }
+                    },
+                    "required": [
+                      "email",
+                      "password"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        }
+      }
+    },
+    "/logout": {
+      "delete": {
+        "summary": "logs a user out",
+        "tags": [
+          "Users"
+        ],
+        "security": [
+          {
+            "bearerAuth": {
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "user logged out"
+          },
+          "401": {
+            "description": "active session not found"
+          }
+        }
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "http://{defaultHost}",
+      "variables": {
+        "defaultHost": {
+          "default": "localhost:3000"
+        }
+      }
+    }
+  ]
+}

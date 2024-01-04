@@ -4,6 +4,7 @@ describe 'User API' do
       tags 'Snippets'
       security [bearerAuth: {}]
       produces 'application/json'
+      document_index_parameters ::Indexes::Snippet
 
       response '200', 'user logged out' do
         run_test!
