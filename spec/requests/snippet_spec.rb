@@ -29,8 +29,10 @@ describe 'User API' do
             },
             required: [:content]
           }
-        }
+        },
+        required: [:snippet]
       }
+
 
 
       response '201', 'snippet created' do

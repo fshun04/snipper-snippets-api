@@ -38,6 +38,7 @@ module SnipperSnippetsApi
     # config.middleware.use ActionDispatch::Session::CookieStore
 
     config.middleware.use ActionDispatch::Session::CookieStore, key: '_omniauth_callbacks_session', only: ['/auth/google_oauth2/callback']
+
     config.api_only = true
 
   end

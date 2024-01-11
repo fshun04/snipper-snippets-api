@@ -1,10 +1,9 @@
 class Users::SessionsController < Devise::SessionsController
-
   include RackSessionsFix
   respond_to :json
 
   def create
-    contract = Sessions::Contracts::UserSessionContract.new
+    contract = Contracts::Users::UserSessionContract.new
     operation = contract.call(params.permit(user: {}).to_h)
     if operation.success?
       user = User.from_internal_login(operation[:user][:email], operation[:user][:password])

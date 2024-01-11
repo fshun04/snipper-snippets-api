@@ -1,32 +1,30 @@
 class Snippets::SnippetsController < JSONAPI::ResourceController
   skip_before_action :verify_authenticity_token
+
   before_action :authenticate_user!
 
   def index
-    snippets = current_user.snippets
-    snippet_resource = SnippetResource.new(current_user, snippets)
-    render json: snippet_resource.custom_json, status: :ok
-  end
-
-  def show
-    snippet = current_user.snippets.find(params[:id])
-    snippet_resource = SnippetResource.new(current_user, snippet)
-    render json: snippet_resource.custom_json, status: :ok
+    attributes = params.permit(:sort, filter: {}).to_h
+    operation = Snippets::Index.call(attributes, current_user)
+    if operation.success?
+      render json: SnippetSerializer.new(
+        operation.result.filtered,
+        operation.result.options
+      )
+    else
+      render json: { errors: operation.errors }, status: :unprocessable_entity
+    end
   end
 
   def create
-    contract = Snippets::Contracts::SnippetContract.new
-    operation = contract.call(params.permit(snippet: {}).to_h)
+    attributes = params.permit(snippet: [:content]).to_h
+    operation = ::Snippets::Create.call(attributes, current_user)
+    # pp "Operation result: #{operation.result}"
     if operation.success?
-      snippet = current_user.snippets.new(operation[:snippet].to_h)
-      if snippet.save
-        snippet_resource = SnippetResource.new(current_user, snippet)
-        render json: snippet, status: :created
-      else
-        render json: { errors: snippet.errors }, status: :unprocessable_entity
-      end
+      render json: SnippetSerializer.new(operation.result, params: { current_user: current_user })
     else
-      render json: { errors: operation.errors.to_h }, status: :unprocessable_entity
+      render json: { errors: operation.errors }, status: :unprocessable_entity
     end
   end
+
 end

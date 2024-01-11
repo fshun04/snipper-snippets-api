@@ -299,7 +299,10 @@
                       "content"
                     ]
                   }
-                }
+                },
+                "required": [
+                  "snippet"
+                ]
               }
             }
           },

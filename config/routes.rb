@@ -13,6 +13,6 @@ Rails.application.routes.draw do
   }
 
   jsonapi_resources :users
-  jsonapi_resources :snippets, controller: 'snippets/snippets', as: 'snippets'
+  jsonapi_resources :snippets, controller: 'snippets/snippets'
 
 end

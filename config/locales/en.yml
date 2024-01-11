@@ -1,14 +1,12 @@
-# Files in the config/locales directory are used for internationalization
-# and are automatically loaded by Rails. If you want to use locales other
 # than English, add the necessary files in this directory.
 #
 # To use the locales, use `I18n.t`:
 #
-#     I18n.t "hello"
+#     I18n.t 'hello'
 #
 # In views, this is aliased to just `t`:
 #
-#     <%= t("hello") %>
+#     <%= t('hello') %>
 #
 # To use a different locale, set it with `I18n.locale`:
 #
@@ -24,10 +22,25 @@
 # Instead, surround them with single quotes.
 #
 # en:
-#   "true": "foo"
+#   'true': 'foo'
 #
 # To learn more, please read the Rails Internationalization guide
 # available at https://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  operations:
+    validation:
+      missing_response_attributes: |
+        %{entity}: Missing the following response attributes: %{attributes}. Given response body: %{response_body}
+      invalid_date_filter_empty: "Date filter is empty, should contain one filter operator"
+      date_filter_should_have_one_op: |
+        Date filter has more than one filter operator, should contain one filter operator
+      invalid_date:
+        format: "invalid format of date, must be: %{must_be}"
+        content: "invalid date"
+      invalid_filter_operator: |
+        Invalid filter operator %{operator}, must include exactly one of the following operators: %{operator_list}
+      something_went_wrong: |
+        Something with the request went wrong
+      at_least_one_field_must_be_specified:
+        You must attempt to update at least one attribute

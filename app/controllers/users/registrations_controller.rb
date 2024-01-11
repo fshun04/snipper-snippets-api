@@ -4,7 +4,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   respond_to :json
 
   def create
-    contract = Registrations::Contracts::UserRegistrationContract.new
+    contract = Contracts::Users::UserRegistrationContract.new
     operation = contract.call(params.permit(user: {}).to_h)
     if operation.success?
       user = User.new(operation[:user].to_h)

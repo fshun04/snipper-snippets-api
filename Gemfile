@@ -65,4 +65,6 @@ gem 'jsonapi-resources'
 gem 'dry-schema'
 gem 'dry-validation'
 gem 'rswag'
+gem 'kaminari'
+gem 'attr_encrypted'
 
