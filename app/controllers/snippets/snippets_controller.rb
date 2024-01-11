@@ -19,7 +19,6 @@ class Snippets::SnippetsController < JSONAPI::ResourceController
   def create
     attributes = params.permit(snippet: [:content]).to_h
     operation = ::Snippets::Create.call(attributes, current_user)
-    # pp "Operation result: #{operation.result}"
     if operation.success?
       render json: SnippetSerializer.new(operation.result, params: { current_user: current_user })
     else
