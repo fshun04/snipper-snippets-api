@@ -6,6 +6,10 @@ class Snippet < ActiveRecord::Base
 
   attr_encrypted :content, key: Rails.application.credentials.attr_encrypted_key
 
+  def decrypt
+    { id: self.id, content: self.content }
+  end
+
   private
 
   def decrypt_and_search(val)

@@ -2,7 +2,7 @@
 
 module Indexes
   class Snippet < Index
-    SORTABLE_FIELDS = %i[content created_at updated_at].freeze
+    SORTABLE_FIELDS = %i[content encrypted_content created_at updated_at].freeze
     FILTERABLE_FIELDS = [
       content: [:contains],
       created_at: %i[lt lte gt gte],

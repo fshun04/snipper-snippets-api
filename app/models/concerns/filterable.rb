@@ -4,7 +4,7 @@ module Filterable
   included do
     columns.each do |c|
       case c.type
-      when :string
+      when :string 
         if c.name == 'encrypted_content'
           scope "filter_content_contains", lambda { |val|
             where("#{table_name}.encrypted_content IS NOT NULL")
@@ -36,11 +36,7 @@ module Filterable
           results = results.public_send("filter_#{key}", filter) if filter.present?
         else
           filter.each do |type, value|
-            if key == 'content' && type == 'contains'
               results = results.public_send("filter_#{key}_#{type}", value) if value.present?
-            else
-              results = results.public_send("filter_#{key}_#{type}", value) if value.present?
-            end
           end
         end
       end
