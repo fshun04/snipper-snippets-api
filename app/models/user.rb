@@ -1,29 +1,29 @@
-  class User < ApplicationRecord
+class User < ActiveRecord::Base
+  include Devise::JWT::RevocationStrategies::JTIMatcher
 
-    include Devise::JWT::RevocationStrategies::JTIMatcher
-    devise :database_authenticatable, :registerable, :recoverable, :validatable, :jwt_authenticatable, :omniauthable, jwt_revocation_strategy: self, omniauth_providers: %i[google_oauth2]
-    has_many :snippets
+  devise :database_authenticatable, :registerable, :recoverable, :rememberable, :validatable, :jwt_authenticatable, :omniauthable, jwt_revocation_strategy: self, omniauth_providers: %i[google_oauth2]
 
-    def self.from_omniauth(access_token)
-      data = access_token.info
-      user = User.where(email: data['email']).first
+  has_many :snippets
 
-      unless user
-        user = User.create(
-          email: data['email'],
-          password: Devise.friendly_token[0,20]
-        )
-      end
-      user
+  def self.from_omniauth(access_token)
+    data = access_token.info
+    user = User.where(email: data['email']).first
+
+    unless user
+      user = User.create(
+        email: data['email'],
+        password: Devise.friendly_token[0,20]
+      )
     end
-
-    def self.from_internal_login(email, password)
-      user = User.find_by(email: email)
-      return nil unless user
-      return user if user.valid_password?(password)
-
-      nil
-    end
-
+    user
   end
 
+  def self.from_internal_login(email, password)
+    user = User.find_by(email: email)
+    return nil unless user
+    return user if user.valid_password?(password)
+
+    nil
+  end
+
+end

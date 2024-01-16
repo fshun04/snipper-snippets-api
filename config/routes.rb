@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  mount Rswag::Ui::Engine => '/api-docs'
+  mount Rswag::Api::Engine => '/api-docs'
+
   devise_for :users, path: '', path_names: {
     sign_in: 'login',
     sign_out: 'logout',
@@ -7,13 +10,9 @@ Rails.application.routes.draw do
   controllers: {
     sessions: 'users/sessions',
     registrations: 'users/registrations',
-    omniauth_callbacks: 'users/omniauth_callbacks'
   }
 
-  resources :snippets, only: :index, controller: 'snippets/snippets'
-  resources :snippets, only: :create, controller: 'snippets/snippets'
+  jsonapi_resources :users
+  jsonapi_resources :snippets, controller: 'snippets/snippets'
 
-  resources :users, controller: 'users/registrations' do
-    resources :snippets, only: [:show, :update, :new, :destroy], controller: 'snippets/snippets'
-  end
 end

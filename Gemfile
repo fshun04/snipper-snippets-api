@@ -7,7 +7,10 @@ ruby "3.2.2"
 gem "rails", "~> 7.0.8"
 
 # Use sqlite3 as the database for Active Record
-gem "sqlite3", "~> 1.4"
+# gem "sqlite3", "~> 1.4"
+
+gem 'mysql2'
+
 
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", "~> 5.0"
@@ -41,12 +44,13 @@ group :development, :test do
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
   gem 'rspec-rails'
   gem 'rspec-support'
-
+  gem 'factory_bot_rails'
+  gem 'devise', github: 'heartcombo/devise'
 end
 
 group :test do
-  gem 'factory_bot_rails'
   gem 'shoulda-matchers'
+  gem 'database_cleaner'
 end
 
 group :development do
@@ -55,10 +59,17 @@ group :development do
 end
 
 gem 'rack-cors'
-gem 'devise', github: 'heartcombo/devise'
 gem 'devise-jwt'
 gem 'jsonapi-serializer'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-rails_csrf_protection', '~> 1.0'
 gem 'dotenv-rails', groups: [:development, :test]
 gem 'pundit'
+gem 'jsonapi-resources'
+gem 'dry-schema'
+gem 'dry-validation'
+gem 'rswag'
+gem 'kaminari'
+gem 'attr_encrypted'
+gem 'racc', '~> 1.7.2'
+
