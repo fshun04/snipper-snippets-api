@@ -11,10 +11,6 @@ class Snippets::SnippetsController < JSONAPI::ResourceController
         operation.result.filtered,
         operation.result.options
       )
-      # sorted_records = operation.result.filtered
-      # # pp "SORTED RECORDS: #{sorted_records.inspect}"
-      # serializer = SnippetSerializer.new(sorted_records, operation.result.options)
-      # render json: serializer
     else
       render json: { errors: operation.errors }, status: :unprocessable_entity
     end

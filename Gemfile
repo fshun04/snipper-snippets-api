@@ -45,10 +45,12 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'rspec-support'
   gem 'factory_bot_rails'
+  gem 'devise', github: 'heartcombo/devise'
 end
 
 group :test do
   gem 'shoulda-matchers'
+  gem 'database_cleaner'
 end
 
 group :development do
@@ -57,7 +59,6 @@ group :development do
 end
 
 gem 'rack-cors'
-gem 'devise', github: 'heartcombo/devise'
 gem 'devise-jwt'
 gem 'jsonapi-serializer'
 gem 'omniauth-google-oauth2'
@@ -70,4 +71,5 @@ gem 'dry-validation'
 gem 'rswag'
 gem 'kaminari'
 gem 'attr_encrypted'
+gem 'racc', '~> 1.7.2'
 

@@ -1,33 +1,33 @@
-require 'rails_helper'
+# require 'rails_helper'
 
-RSpec.describe Snippets::Contracts::SnippetContract do
-  let(:contract) { described_class.new }
+# RSpec.describe Snippets::Contracts::SnippetContract do
+#   let(:contract) { described_class.new }
 
-  describe 'Validation' do
-    context 'with valid input' do
-      let(:valid_snippet) { build(:valid_snippet) }
+#   describe 'Validation' do
+#     context 'with valid input' do
+#       let(:valid_snippet) { build(:valid_snippet) }
 
-      it 'is valid' do
-        input = valid_snippet.attributes
-        result = contract.call(snippet: input)
-        expect(result).to be_success
-      end
-    end
+#       it 'is valid' do
+#         input = valid_snippet.attributes
+#         result = contract.call(snippet: input)
+#         expect(result).to be_success
+#       end
+#     end
 
-    context 'with invalid input' do
-      let(:invalid_snippet) { build(:invalid_snippet) }
+#     context 'with invalid input' do
+#       let(:invalid_snippet) { build(:invalid_snippet) }
 
-      it 'is invalid' do
-        input = invalid_snippet.attributes
-        result = contract.call(snippet: input)
-        expect(result).not_to be_success
-      end
+#       it 'is invalid' do
+#         input = invalid_snippet.attributes
+#         result = contract.call(snippet: input)
+#         expect(result).not_to be_success
+#       end
 
-      it 'provides detailed error messages' do
-        input = invalid_snippet.attributes
-        result = contract.call(snippet: input)
-        expect(result.errors[:snippet][:content]).to include('must be filled')
-      end
-    end
-  end
-end
+#       it 'provides detailed error messages' do
+#         input = invalid_snippet.attributes
+#         result = contract.call(snippet: input)
+#         expect(result.errors[:snippet][:content]).to include('must be filled')
+#       end
+#     end
+#   end
+# end

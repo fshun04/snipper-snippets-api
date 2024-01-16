@@ -6,7 +6,7 @@ describe 'User API' do
       produces 'application/json'
       document_index_parameters ::Indexes::Snippet
 
-      response '200', 'user logged out' do
+      response '200', 'successful response' do
         run_test!
       end
 

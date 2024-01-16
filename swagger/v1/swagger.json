@@ -164,7 +164,7 @@
             "name": "sort",
             "in": "query",
             "required": false,
-            "description": "Comma-separated list of fields to sort by. Available fields: `content`, `created_at`, `updated_at`. Prefix a field by `-` to reverse the sort order. For example `foo,-bar` sorts by `foo` in ascending order then by `bar` in descending order.",
+            "description": "Comma-separated list of fields to sort by. Available fields: `content`, `encrypted_content`, `created_at`, `updated_at`. Prefix a field by `-` to reverse the sort order. For example `foo,-bar` sorts by `foo` in ascending order then by `bar` in descending order.",
             "schema": {
               "type": "string"
             }
@@ -253,7 +253,7 @@
         ],
         "responses": {
           "200": {
-            "description": "user logged out"
+            "description": "successful response"
           },
           "401": {
             "description": "active session not found"
