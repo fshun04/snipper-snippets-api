@@ -3,14 +3,16 @@ require 'rails_helper'
 RSpec.describe SnippetsController, type: :request do
   before(:each) do
     DatabaseCleaner.clean
+    FactoryBot.rewind_sequences
   end
 
   describe 'GET /snippets' do
     context 'when displaying the user\'s snippets (sorting/filtering disabled)' do
       let(:user) { create(:user) }
-      let!(:first_snippet) { create(:first_snippet, user: user) }
-      let!(:second_snippet) { create(:second_snippet, user: user) }
-      let!(:third_snippet) { create(:third_snippet, user: user) }
+
+      let!(:first_snippet) { create(:snippet, user: user, content: generate(:content_sequence)) }
+      let!(:second_snippet) { create(:snippet, user: user, content: generate(:content_sequence)) }
+      let!(:third_snippet) { create(:snippet, user: user, content: generate(:content_sequence)) }
 
       before(:each) do
         sign_in user
@@ -35,10 +37,12 @@ RSpec.describe SnippetsController, type: :request do
     end
 
     context 'when displaying the user\'s snippets (sorting enabled)' do
+
       let(:user) { create(:user) }
-      let!(:first_snippet) { create(:first_snippet, user: user) }
-      let!(:second_snippet) { create(:second_snippet, user: user) }
-      let!(:third_snippet) { create(:third_snippet, user: user) }
+
+      let!(:first_snippet) { create(:snippet, user: user, content: generate(:content_sequence)) }
+      let!(:second_snippet) { create(:snippet, user: user, content: generate(:content_sequence)) }
+      let!(:third_snippet) { create(:snippet, user: user, content: generate(:content_sequence)) }
 
       before(:each) do
         sign_in user
@@ -64,9 +68,10 @@ RSpec.describe SnippetsController, type: :request do
 
     context 'when displaying the user\'s snippets (filtering enabled)' do
       let(:user) { create(:user) }
-      let!(:first_snippet) { create(:first_snippet, user: user) }
-      let!(:second_snippet) { create(:second_snippet, user: user) }
-      let!(:third_snippet) { create(:third_snippet, user: user) }
+
+      let!(:first_snippet) { create(:snippet, user: user, content: generate(:content_sequence)) }
+      let!(:second_snippet) { create(:snippet, user: user, content: generate(:content_sequence)) }
+      let!(:third_snippet) { create(:snippet, user: user, content: generate(:content_sequence)) }
 
       before(:each) do
         sign_in user
