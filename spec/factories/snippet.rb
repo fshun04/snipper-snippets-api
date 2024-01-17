@@ -1,14 +1,19 @@
 FactoryBot.define do
-  factory :first_snippet, class: 'Snippet' do
-    content { "puts \"hello world!\"" }
-    user
+  sequence :content_sequence do |n|
+    case n
+    when 1
+      "puts \"hello world!\""
+    when 2
+      "pp \"hello world!\""
+    when 3
+      "Rails.logger.debug(\"hello world!\")"
+    else
+      "puts \"hello world!\""
+    end
   end
-  factory :second_snippet, class: 'Snippet' do
-    content { "pp \"hello world!\"" }
-    user
-  end
-  factory :third_snippet, class: 'Snippet' do
-    content { "Rails.logger.debug(\"hello world!\")" }
+
+  factory :snippet, class: 'Snippet' do
+    content { generate(:content_sequence) }
     user
   end
 end

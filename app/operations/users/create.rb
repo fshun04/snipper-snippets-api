@@ -1,24 +1,21 @@
-# frozen_string_literal: true
-
-module Snippets
+module Users
   class Create
     prepend BaseOperation
 
     param :params
-    param :current_user, default: -> { nil }
 
     attr_reader :result
 
     def call
       validate_params
-      create_snippet!
+      create_user!
       set_result
     end
 
     private
 
     def validate_params
-      validation = ::Snippets::Create::ValidateParams.new.call(@params)
+      validation = ::Users::Create::ValidateRegistrationParams.new.call(@params)
       return if validation.success?
 
       code = 400
@@ -27,9 +24,9 @@ module Snippets
       interrupt_with_errors!([errors_with_code(code, detail)])
     end
 
-    def create_snippet!
+    def create_user!
       ActiveRecord::Base.transaction do
-        @snippet = current_user.snippets.create!(snippet_creation_attributes)
+        @user = User.create!(user_creation_attributes)
       rescue StandardError
         code = 400
         detail = I18n.t('operations.validation.something_went_wrong')
@@ -38,14 +35,16 @@ module Snippets
       end
     end
 
-    def snippet_creation_attributes
+    def user_creation_attributes
       {
-        content: @params.dig(:snippet, :content)
+        email: @params.dig(:user, :email),
+        password: @params.dig(:user, :password),
+        name: @params.dig(:user, :name),
       }
     end
 
     def set_result
-      @result = @snippet
+      @result = @user
     end
   end
 end

@@ -4,19 +4,12 @@ class Users::RegistrationsController < Devise::RegistrationsController
   respond_to :json
 
   def create
-    contract = Contracts::Users::UserRegistrationContract.new
-    operation = contract.call(params.permit(user: {}).to_h)
+    attributes = params.permit(user: [:email, :password, :name]).to_h
+    operation = ::Users::Create.call(attributes)
     if operation.success?
-      user = User.new(operation[:user].to_h)
-      if user.save
-        snippets = user.snippets
-        user_resource = UserResource.new(user, snippets)
-        render json: user_resource.custom_json, status: :created
-      else
-        render json: { errors: user.errors }, status: :unprocessable_entity
-      end
+      render json: UserSerializer.new(operation.result)
     else
-      render json: { errors: operation.errors.to_h }, status: :unprocessable_entity
+      render json: { errors: operation.errors }, status: :unprocessable_entity
     end
   end
 end

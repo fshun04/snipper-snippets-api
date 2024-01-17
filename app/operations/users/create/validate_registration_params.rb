@@ -1,8 +1,8 @@
-module Contracts
-  module Users
-    class UserRegistrationContract < Dry::Validation::Contract
+module Users
+  class Create
+    class ValidateRegistrationParams < Dry::Validation::Contract
       params do
-        required(:user).schema do
+        required(:user).hash do
           required(:email).filled(:string, format?: /\A[^@\s]+@[^@\s]+\z/)
           required(:password).filled(:string, min_size?: 6)
           required(:name).filled(:string)
