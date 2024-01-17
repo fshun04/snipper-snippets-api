@@ -1,6 +1,6 @@
 module Users
   class Create
-    class ValidateParams < Dry::Validation::Contract
+    class ValidateRegistrationParams < Dry::Validation::Contract
       params do
         required(:user).hash do
           required(:email).filled(:string, format?: /\A[^@\s]+@[^@\s]+\z/)

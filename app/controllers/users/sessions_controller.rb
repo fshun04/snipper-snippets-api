@@ -3,20 +3,21 @@ class Users::SessionsController < Devise::SessionsController
   respond_to :json
 
   def create
-    contract = Contracts::Users::UserSessionContract.new
-    operation = contract.call(params.permit(user: {}).to_h)
-    if operation.success?
-      user = User.from_internal_login(operation[:user][:email], operation[:user][:password])
+    attributes = params.permit(user: [:email, :password]).to_h
+    result = Users::Create::ValidateSessionParams.new.call(attributes)
+    if result.success?
+      user = User.from_internal_login(
+        attributes.dig(:user, :email),
+        attributes.dig(:user, :password)
+      )
       if user
         sign_in(user)
-        snippets = current_user.snippets
-        user_resource = UserResource.new(current_user, snippets)
-        render json: user_resource.custom_json, status: :created
+        render json: UserSerializer.new(user)
       else
-        render json: { errors: [{ title: 'Invalid email or password' }] }, status: :unauthorized
+        render json: { errors: { authentication: ['Invalid email or password'] } }, status: :unauthorized
       end
     else
-      render json: { errors: operation.errors.to_h }, status: :unprocessable_entity
+      render json: { errors: result.errors.to_h }, status: :unprocessable_entity
     end
   end
 

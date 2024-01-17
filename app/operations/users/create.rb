@@ -15,7 +15,7 @@ module Users
     private
 
     def validate_params
-      validation = ::Users::Create::ValidateParams.new.call(@params)
+      validation = ::Users::Create::ValidateRegistrationParams.new.call(@params)
       return if validation.success?
 
       code = 400
@@ -27,10 +27,9 @@ module Users
     def create_user!
       ActiveRecord::Base.transaction do
         @user = User.create!(user_creation_attributes)
-      rescue StandardError => e
+      rescue StandardError
         code = 400
-        # detail = I18n.t('operations.validation.something_went_wrong')
-        detail = e.message
+        detail = I18n.t('operations.validation.something_went_wrong')
 
         fail!([errors_with_code(code, detail)], interrupt: true)
       end
